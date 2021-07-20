@@ -1,7 +1,7 @@
 import math
 
 import numpy as np
-from surf_gen import BasicSurfaceGenerator
+# from surf_gen import BasicSurfaceGenerator
 from math import cos, sin
 
 
@@ -25,8 +25,8 @@ def rotation_cardan(org_ctrl_points, angles):
     """
     alpha, beta, gamma = angles
     assert 0 <= alpha < 2 * math.pi, "Alpha should be between 0 and 2Pi"
-    assert -math.pi/2 < beta <= 0, "Beta should be between -pi/2 and 0"
-    assert -math.pi/2 < gamma <= 0, "Gamma should be between -pi/2 and 0"
+    assert -math.pi / 2 < beta <= 0, "Beta should be between -pi/2 and 0"
+    assert -math.pi / 2 < gamma <= 0, "Gamma should be between -pi/2 and 0"
     rot_X = np.array([[1, 0, 0],
                       [0, cos(gamma), -sin(gamma)],
                       [0, sin(gamma), cos(gamma)]])
@@ -54,22 +54,38 @@ def noise_injection(org_ctrl_points, snr=10):
     noise = np.random.normal(0, std_noise, size=org_ctrl_points.shape)
     return (org_ctrl_points + noise).tolist()
 
-def 
 
-org_ctrl_points = np.array([[0, 0, 0], [0, 20, 10], [0, 40, 0],
-                            [40, 0, 5], [40, 20, 15], [40, 40, 5],
-                            [80, 0, 20], [80, 20, 35], [80, 40, 20]])
-trans_vector = [10, 20, 30]
-# ctrl_pts = translation(org_ctrl_points=org_ctrl_points, trans_vector=trans_vector)
-# print(ctrl_pts)
-# sg = BasicSurfaceGenerator(contrl_points=ctrl_pts, delta=1 / 10)
-# sg.surf_visu()
-# rot_angles = [0, -1.57, -1.57]
-# ctrl_pts = rotation_cardan(org_ctrl_points, rot_angles)
-# sg = BasicSurfaceGenerator(contrl_points=ctrl_pts, delta=1 / 10)
-# sg.surf_visu()
+def scaling(org_ctrl_points, scale):
+    """
+    Apply scaling to the control points
+    :param org_ctrl_points: original control points
+    :param scale: scaling on x, y, z axis, where scale on z need to be positive and neither of three should be 0
+    :return: new control points
+    """
+    org_ctrl_points = np.array(org_ctrl_points)
+    assert scale[-1] > 0, "Scaling on z-axis needs to be positive"
+    assert scale[0] != 0, "Scaling on x-axis cannot be zero"
+    assert scale[1] != 0, "Scaling on y-axis cannot be zero"
+    return np.multiply(org_ctrl_points, scale).tolist()
 
-# ctrl_pts = noise_injection(org_ctrl_points, snr=10)
-# print(ctrl_pts)
+
+
+
+# org_ctrl_points = np.array([[0, 0, 0], [0, 20, 10], [0, 40, 0],
+#                             [40, 0, 5], [40, 20, 15], [40, 40, 5],
+#                             [80, 0, 20], [80, 20, 35], [80, 40, 20]])
+# trans_vector = [-10, 20, 30]
+# ctrl_pts = scaling(org_ctrl_points, trans_vector)
+# # ctrl_pts = translation(org_ctrl_points=org_ctrl_points, trans_vector=trans_vector)
+# # print(ctrl_pts)
+# # sg = BasicSurfaceGenerator(contrl_points=ctrl_pts, delta=1 / 10)
+# # sg.surf_visu()
+# # rot_angles = [0, -1.57, -1.57]
+# # ctrl_pts = rotation_cardan(org_ctrl_points, rot_angles)
 # sg = BasicSurfaceGenerator(contrl_points=ctrl_pts, delta=1 / 10)
 # sg.surf_visu()
+#
+# # ctrl_pts = noise_injection(org_ctrl_points, snr=10)
+# # print(ctrl_pts)
+# # sg = BasicSurfaceGenerator(contrl_points=ctrl_pts, delta=1 / 10)
+# # sg.surf_visu()
