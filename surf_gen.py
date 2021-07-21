@@ -1,8 +1,10 @@
 from geomdl.visualization import VisMPL
 from matplotlib import cm
 from geomdl import BSpline, utilities
+from geomdl import exchange
 import vis
 import numpy as np
+import math
 
 
 # create standard surfaces (Rubio and Choi)
@@ -52,26 +54,46 @@ class BasicSurfaceGenerator:
         self.surf = BSpline.Surface()
         self.surf.degree_u = dim_ctrl_points[0] - 1
         self.surf.degree_v = dim_ctrl_points[1] - 1
-        print(self.ctrl_points, dim_ctrl_points)
         self.surf.set_ctrlpts(self.ctrl_points, dim_ctrl_points[0], dim_ctrl_points[1])
         self.surf.knotvector_u = utilities.generate_knot_vector(self.surf.degree_u, self.surf.ctrlpts_size_u)
         self.surf.knotvector_v = utilities.generate_knot_vector(self.surf.degree_v, self.surf.ctrlpts_size_v)
         self.surf.delta = delta
         self.surf.evaluate()
 
-    def surf_visu(self, resolution=1 / 10):
+    def surf_visu(self, resolution=1 / 10, to_file=False, filename=None):
         self.surf.delta = resolution
         self.surf.evaluate()
         self.surf.vis = VisMPL.VisSurface()
-        self.surf.render(colormap=cm.cool)
+        if to_file:
+            self.surf.render(colormap=cm.cool, filename=filename, plot=False)
+        else:
+            self.surf.render(colormap=cm.cool)
         return 0
 
-    def get_nodes(self):
+    def get_nodes_coordinates(self):
         return self.surf.evalpts
 
+    def get_nodes_grid(self):
+        eval_pts = self.surf.evalpts
+        l = int(math.sqrt(len(eval_pts)))
+        X = np.array(eval_pts)[0:len(eval_pts):l, 0]
+        Y = np.array(eval_pts)[0:l, 1]
+        X, Y = np.meshgrid(X, Y)
+        Z = np.array(eval_pts)[:, 2]
+        Z = Z.reshape((len(X), len(Y)))
+        return X, Y, Z
 
-# sg = BasicSurfaceGenerator(basic_surf_name="Bosse", delta=1/10)
-# DATA=np.array(sg.get_nodes())
+    def export_json(self, file_name):
+        exchange.export_json(self.surf, file_name)
+
+surf = "Plat"
+sg = BasicSurfaceGenerator(basic_surf_name=surf, delta=1/101)
+X, Y, Z = sg.get_nodes_grid()
+evalpts = sg.get_nodes_coordinates()
+vis.viz_evalpts_2d_rgb(evalpts, figname=surf)
 # print(DATA)
-# vis.viz_evalpts_3d(DATA)
 # sg.surf_visu()
+
+
+
+

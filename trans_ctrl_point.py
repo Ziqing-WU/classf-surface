@@ -1,8 +1,9 @@
 import math
 
 import numpy as np
-# from surf_gen import BasicSurfaceGenerator
+from surf_gen import BasicSurfaceGenerator
 from math import cos, sin
+import vis
 
 
 def translation(org_ctrl_points, trans_vector):
@@ -69,23 +70,3 @@ def scaling(org_ctrl_points, scale):
     return np.multiply(org_ctrl_points, scale).tolist()
 
 
-
-
-# org_ctrl_points = np.array([[0, 0, 0], [0, 20, 10], [0, 40, 0],
-#                             [40, 0, 5], [40, 20, 15], [40, 40, 5],
-#                             [80, 0, 20], [80, 20, 35], [80, 40, 20]])
-# trans_vector = [-10, 20, 30]
-# ctrl_pts = scaling(org_ctrl_points, trans_vector)
-# # ctrl_pts = translation(org_ctrl_points=org_ctrl_points, trans_vector=trans_vector)
-# # print(ctrl_pts)
-# # sg = BasicSurfaceGenerator(contrl_points=ctrl_pts, delta=1 / 10)
-# # sg.surf_visu()
-# # rot_angles = [0, -1.57, -1.57]
-# # ctrl_pts = rotation_cardan(org_ctrl_points, rot_angles)
-# sg = BasicSurfaceGenerator(contrl_points=ctrl_pts, delta=1 / 10)
-# sg.surf_visu()
-#
-# # ctrl_pts = noise_injection(org_ctrl_points, snr=10)
-# # print(ctrl_pts)
-# # sg = BasicSurfaceGenerator(contrl_points=ctrl_pts, delta=1 / 10)
-# # sg.surf_visu()
