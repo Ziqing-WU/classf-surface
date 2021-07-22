@@ -38,7 +38,7 @@ class BasicSurfaceGenerator:
                 "Meplat": [[0, 0, 40], [0, 40, 40], [0, 80, 0],
                            [40, 0, 40], [40, 40, 0], [40, 80, -40],
                            [80, 0, 0], [80, 40, -40], [80, 80, -40]],
-                "Plat": [[0, 0, 40], [0, 40, 0], [0, 80, 0],
+                "Plat": [[0, 0, 0], [0, 40, 0], [0, 80, 0],
                          [40, 0, 0], [40, 40, 0], [40, 80, 0],
                          [80, 0, 0], [80, 40, 0], [80, 80, 0]]
                 }
@@ -86,13 +86,17 @@ class BasicSurfaceGenerator:
     def export_json(self, file_name):
         exchange.export_json(self.surf, file_name)
 
-surf = "Plat"
-sg = BasicSurfaceGenerator(basic_surf_name=surf, delta=1/101)
-X, Y, Z = sg.get_nodes_grid()
-evalpts = sg.get_nodes_coordinates()
-vis.viz_evalpts_2d_rgb(evalpts, figname=surf)
-# print(DATA)
-# sg.surf_visu()
+# surf = "Tuile"
+# sg = BasicSurfaceGenerator(basic_surf_name=surf)
+# X, Y, Z = sg.get_nodes_grid()
+# evalpts = sg.get_nodes_coordinates()
+# # vis.viz_evalpts_2d_rgb(evalpts, figname=surf)
+# vis.viz_evalpts_3d(evalpts)
+# # print(DATA)
+# # sg.surf_visu()
+
+
+
 
 
 
